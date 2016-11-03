@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"encoding/json"
+	"fmt"
 )
 
 var templates *template.Template
@@ -47,6 +49,18 @@ func init() {
 
 }
 
+func initStaticRouting() {
+	cssHandler := http.FileServer(http.Dir("./static/css/"))
+	jsHandler := http.FileServer(http.Dir("./static/js/"))
+	imgHandler := http.FileServer(http.Dir("./static/img/"))
+	fontsHandler := http.FileServer(http.Dir("./static/fonts/"))
+
+	http.Handle("/css/", http.StripPrefix("/css/", cssHandler))
+	http.Handle("/fonts/", http.StripPrefix("/fonts/", fontsHandler))
+	http.Handle("/js/", http.StripPrefix("/js/", jsHandler))
+	http.Handle("/img/", http.StripPrefix("/img/", imgHandler))
+}
+
 func renderTemplate(w http.ResponseWriter, tmpl string, vars interface{}) {
 	
 	err := templates.ExecuteTemplate(w, tmpl+".html", vars)
@@ -63,3 +77,56 @@ func convertMinusOne(inp string) string {
 	}
 
 }
+
+func getResponse(url string) *http.Response {
+	// Build the request
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		log.Fatal("NewRequest: ", err)
+	//	return
+	}
+
+	// For control over HTTP client headers,
+	// redirect policy, and other settings,
+	// create a Client
+	// A Client is an HTTP client
+	client := &http.Client{}
+
+	// Send the request via a client
+	// Do sends an HTTP request and
+	// returns an HTTP response
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Fatal("Do: ", err)
+	//	return
+	}
+	return resp
+}
+
+func getVarmap(resp *http.Response) map[string]interface{} {
+	// Fill the record with the data from the JSON
+	var creditCards CreditCards
+
+	// Use json.Decode for reading streams of JSON data
+	if err := json.NewDecoder(resp.Body).Decode(&creditCards); err != nil {
+		log.Println(err)
+	}
+
+	varmap := map[string]interface{}{
+		"FeaturedCards": creditCards.FeaturedCards,
+		"AllCards": creditCards.Cards,
+	}
+
+	return varmap
+
+}
+
+func getUrl(siteName string) string {
+	category := "airmiles"
+	language := "en"
+	pageSize := "6"
+
+	url := fmt.Sprintf("%s/api/credit-card/v2/cards/%s?&lang=%s&pageSize=%s",siteName,category,language,pageSize)
+	return url
+}
+
