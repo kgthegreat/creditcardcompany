@@ -1,0 +1,65 @@
+package main
+
+import (
+	"html/template"
+	"log"
+	"net/http"
+	"os"
+	"path/filepath"
+)
+
+var templates *template.Template
+
+func init() {
+	filenames := []string{}
+	err := filepath.Walk("templates", func(path string, info os.FileInfo, err error) error {
+		if !info.IsDir() && filepath.Ext(path) == ".html" {
+			filenames = append(filenames, path)
+		}
+
+		return nil
+	})
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	if len(filenames) == 0 {
+		return
+	}
+
+
+	templates, err = template.New("").Funcs(template.FuncMap{
+		"convertMinusOne": func(inp string) string {
+			if inp == "-1" {
+				return "No Fees"
+			} else {
+				return inp
+			}
+
+		},
+		"truncateLongText": func(inp string) string {
+			return inp[0:25] + " ..."
+		},
+	}).ParseFiles(filenames...)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+}
+
+func renderTemplate(w http.ResponseWriter, tmpl string, vars interface{}) {
+	
+	err := templates.ExecuteTemplate(w, tmpl+".html", vars)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+func convertMinusOne(inp string) string {
+	if inp == "-1" {
+		return "No Fees"
+	} else {
+		return inp
+	}
+
+}
