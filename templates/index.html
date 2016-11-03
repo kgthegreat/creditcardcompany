@@ -1,113 +1,91 @@
-<!doctype html>
-<html lang="en" class="no-js">
+<!DOCTYPE html>
+<html>
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600' rel='stylesheet' type='text/css'>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+    <title>Credit Card Company</title>
+    <style type="text/css">
+      .mainbody { text-align: center; padding: 150px; }
+      h1 { font-size: 40px; }
+      body { font: 20px Helvetica, sans-serif; color: #333; }
+      #article { display: block; text-align: left; width: 650px; margin: 0 auto; }
+      a { color: #dc8100; text-decoration: none; }
+      a:hover { color: #333; text-decoration: none; }
+      ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #333;
+      }
 
-	<link rel="stylesheet" href="css/reset.css"> <!-- CSS reset -->
-	<link rel="stylesheet" href="css/style.css"> <!-- Resource style -->
-	<script src="js/modernizr.js"></script> <!-- Modernizr -->
-  	
-	<title>Woet Credit Cards?</title>
+      li {
+      float: left;
+      }
+
+      li a {
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      }
+
+      a:hover:not(.active) {
+      background-color: #111;
+      }
+
+      .active {
+      background-color:#4CAF50;
+      }
+      @media screen and (max-width:680px) {
+      ul.topnav li:not(:first-child) {display: none;}
+      ul.topnav li.icon {
+      float: right;
+      display: inline-block;
+      }
+      }
+
+      /* The "responsive" class is added to the topnav with JavaScript when the user clicks on the icon. This class makes the topnav look good on small screens */
+      @media screen and (max-width:680px) {
+      ul.topnav.responsive {position: relative;}
+      ul.topnav.responsive li.icon {
+      position: absolute;
+      right: 0;
+      top: 0;
+      }
+      ul.topnav.responsive li {
+      float: none;
+      display: inline;
+      }
+      ul.topnav.responsive li a {
+      display: block;
+      text-align: left;
+      }
+      }
+      
+    </style>
+ 
 </head>
 <body>
-	<section class="cd-intro">
-		<h1>Credit Card Comparison</h1>
-	</section> <!-- .cd-intro -->
+  <ul>
+    <li><a class="active" href="#home">Credit Card Company</a></li>
+    </ul>
+    <div id="article" class="mainbody">
+    <h1>Find credit cards from around the world right here</h1>
+    <div>
+      <p>
+        <a href="/hongkong"> HONG KONG </a>
+        |
+        <a href="/singapore"> SINGAPORE </a>
+        |
+        <a href="/taiwan"> TAIWAN </a>
+        |
+        <a href="/portugal"> PORTUGAL </a>
+        |
+        <a href="/hackathon"> HACKATHON </a>
 
-	<section class="cd-products-comparison-table">
-		<header>
-			<h2>Compare Cards</h2>
-
-			<div class="actions">
-				<a href="#0" class="reset">Reset</a>
-				<a href="#0" class="filter">Filter</a>
-			</div>
-		</header>
-
-		<div class="cd-products-table">
-			<div class="features">
-				<div class="top-info">Cards</div>
-				<ul class="cd-features-list">
-                                  <li>Click to Apply</li>
-				  <li>Annual Salary</li>
-                                  <li>Rating</li>
-				  <li>Fees</li>
-                                  <li>Overseas Spendings</li>
-				  <li>Local Spendings</li>
-				  <li>Features</li>
-				  <li>Waiver</li>
-                                  
-				</ul>
-			</div> <!-- .features -->
-			
-			<div class="cd-products-wrapper">
-			  <ul class="cd-products-columns">
-                            {{range $featuredCard := .FeaturedCards }}
-                            
-			    <li class="product">
-			      <div class="top-info">
-
-				<div class="check"></div>
-                                
-				<img src="{{$featuredCard.Image}}" alt="product image">
-
-				<h3>{{$featuredCard.Name}}</h3>
-			      </div> <!-- .top-info -->
-                              
-			      <ul class="cd-features-list">
-                                <li><a href="{{$featuredCard.LinkGeneralDesktop}}">Apply Now!</a></li>
-				<li>{{$featuredCard.Eligibility.MinAnnualIncome}}</li>
-				<li class="rate"><span>5/5</span></li>
-                                <li>{{$featuredCard.RewardTravel.ConversionFee}}</li>
-                                <li>{{$featuredCard.RewardTravel.Overseas}} /miles</li>
-                                <li>{{$featuredCard.RewardTravel.Local}} /miles</li>
-	                        <li>{{truncateLongText (index $featuredCard.Feature 0)}}</li>
-	                        <li>{{truncateLongText (index $featuredCard.Footnote 0)}}</li>
-
-
-			      </ul>
-			    </li> <!-- .product -->
-                            
-                            {{end}}
-
-			  
-                            {{range $allCard := .AllCards }}
-                            
-			    <li class="product">
-			      <div class="top-info">
-			        <div class="check"></div>
-			        <img src="{{$allCard.Image}}" alt="product image">
-			        <h3>{{$allCard.Name}}</h3>
-
-			      </div> <!-- .top-info -->
-
-                              <ul class="cd-features-list">
-                                <li><a href="{{$allCard.LinkGeneralDesktop}}">Apply Now!</a></li>
-				<li>{{$allCard.Eligibility.MinAnnualIncome}}</li>
-				<li class="rate"><span>5/5</span></li>
-                                <li>{{$allCard.RewardTravel.ConversionFee}}</li>
-                                <li>{{$allCard.RewardTravel.Overseas}} /miles</li>
-                                <li>{{$allCard.RewardTravel.Local}} /miles</li>
-	                        <li>{{truncateLongText (index $allCard.Feature 0)}}</li>
-
-			      </ul>
-			    </li> <!-- .product -->
-                          
-                            {{end}}
-                          </ul> <!-- .cd-products-columns -->
-                          
-
-			</div> <!-- .cd-products-wrapper -->
-			
-			<ul class="cd-table-navigation">
-				<li><a href="#0" class="prev inactive">Prev</a></li>
-				<li><a href="#0" class="next">Next</a></li>
-			</ul>
-		</div> <!-- .cd-products-table -->
-	</section> <!-- .cd-products-comparison-table -->
-<script src="js/jquery-2.1.4.js"></script>
-<script src="js/main.js"></script> <!-- Resource jQuery -->
+      </p>
+    </div>
+    </div>
 </body>
 </html>

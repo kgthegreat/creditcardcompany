@@ -46,7 +46,7 @@ Main Components
 
 -------------------------------- */
 .cd-products-comparison-table {
-  margin-bottom: 6em;
+    margin-bottom: 6em;
 }
 .cd-products-comparison-table::after {
   /* never visible - this is used in jQuery to check the current MQ */
@@ -54,7 +54,8 @@ Main Components
   content: 'mobile';
 }
 .cd-products-comparison-table header {
-  padding: 0 5% 25px;
+    padding: 25px 5% 25px;
+    margin-top: 2.5em;
 }
 .cd-products-comparison-table header::after {
   clear: both;
@@ -64,6 +65,10 @@ Main Components
 .cd-products-comparison-table h2 {
   float: left;
   font-weight: bold;
+  margin-right: 6em;
+}
+#last {
+    padding-right: 12em;
 }
 .cd-products-comparison-table .actions {
   float: right;
