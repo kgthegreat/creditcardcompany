@@ -1,13 +1,13 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
-	"encoding/json"
-	"fmt"
 )
 
 var templates *template.Template
@@ -28,7 +28,6 @@ func init() {
 	if len(filenames) == 0 {
 		return
 	}
-
 
 	templates, err = template.New("").Funcs(template.FuncMap{
 		"convertMinusOne": func(inp string) string {
@@ -62,7 +61,7 @@ func initStaticRouting() {
 }
 
 func renderTemplate(w http.ResponseWriter, tmpl string, vars interface{}) {
-	
+
 	err := templates.ExecuteTemplate(w, tmpl+".html", vars)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -83,7 +82,7 @@ func getResponse(url string) *http.Response {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		log.Fatal("NewRequest: ", err)
-	//	return
+		//	return
 	}
 
 	// For control over HTTP client headers,
@@ -98,7 +97,7 @@ func getResponse(url string) *http.Response {
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Fatal("Do: ", err)
-	//	return
+		//	return
 	}
 	return resp
 }
@@ -114,7 +113,7 @@ func getVarmap(resp *http.Response) map[string]interface{} {
 
 	varmap := map[string]interface{}{
 		"FeaturedCards": creditCards.FeaturedCards,
-		"AllCards": creditCards.Cards,
+		"AllCards":      creditCards.Cards,
 	}
 
 	return varmap
@@ -126,7 +125,6 @@ func getUrl(siteName string) string {
 	language := "en"
 	pageSize := "6"
 
-	url := fmt.Sprintf("%s/api/credit-card/v2/cards/%s?&lang=%s&pageSize=%s",siteName,category,language,pageSize)
+	url := fmt.Sprintf("%s/api/credit-card/v2/cards/%s?&lang=%s&pageSize=%s", siteName, category, language, pageSize)
 	return url
 }
-

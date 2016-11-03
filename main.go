@@ -23,13 +23,13 @@ func NewServer(addr string) *http.Server {
 	// Setup router
 	//	initRouting()
 	initStaticRouting()
-	
+
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/robots.txt", robotsHandler)
 	//http.HandleFunc("/compare", comparehandler)
 	// Create and start server
 	return &http.Server{
-		Addr:    addr,
+		Addr: addr,
 	}
 }
 
@@ -42,14 +42,14 @@ func StartServer(server *http.Server) {
 }
 
 func robotsHandler(w http.ResponseWriter, req *http.Request) {
-	
+
 	var empty []string
 	renderTemplate(w, "robots", empty)
 
 }
 
 func indexHandler(w http.ResponseWriter, req *http.Request) {
-	
+
 	siteName := "https://www.moneyhero.com.hk"
 	url := getUrl(siteName)
 	resp := getResponse(url)
@@ -59,4 +59,3 @@ func indexHandler(w http.ResponseWriter, req *http.Request) {
 	renderTemplate(w, "index", varmap)
 
 }
-
